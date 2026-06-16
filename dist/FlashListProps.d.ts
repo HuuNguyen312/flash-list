@@ -345,6 +345,11 @@ export interface FlashListProps<TItem> extends Omit<ScrollViewProps, "maintainVi
          */
         backdropComponent?: React.ComponentType<any> | React.ExoticComponent<any> | React.ReactElement | null | undefined;
         /**
+         * zIndex applied to the sticky header container.
+         * @default 2
+         */
+        zIndex?: number;
+        /**
          * When a sticky header is displayed, the cell associated with it is hidden.
          * @default false
          */

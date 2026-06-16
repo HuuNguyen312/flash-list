@@ -7,7 +7,7 @@ import React, { useRef, useState, useMemo, useImperativeHandle, useCallback, use
 import { PlatformConfig } from "../../native/config/PlatformHelper";
 import { ViewHolder } from "../ViewHolder";
 import { CompatAnimatedView } from "./CompatView";
-export const StickyHeaders = ({ stickyHeaderIndices, stickyHeaderOffset, renderItem, stickyHeaderRef, recyclerViewManager, scrollY, data, extraData, onChangeStickyIndex, inverted, }) => {
+export const StickyHeaders = ({ stickyHeaderIndices, stickyHeaderOffset, renderItem, stickyHeaderRef, recyclerViewManager, scrollY, data, extraData, onChangeStickyIndex, inverted, stickyHeaderZIndex = 2, }) => {
     const [stickyHeaderState, setStickyHeaderState] = useState({
         currentStickyIndex: -1,
         pushStartsAt: Number.MAX_SAFE_INTEGER,
@@ -17,12 +17,12 @@ export const StickyHeaders = ({ stickyHeaderIndices, stickyHeaderOffset, renderI
     const sortedIndices = useMemo(() => {
         return [...stickyHeaderIndices].sort((first, second) => first - second);
     }, [stickyHeaderIndices]);
-    const legthInvalid = sortedIndices.length === 0 ||
+    const lengthInvalid = sortedIndices.length === 0 ||
         recyclerViewManager.getDataLength() <=
             sortedIndices[sortedIndices.length - 1];
     const compute = useCallback(() => {
         var _a, _b, _c, _d, _e, _f;
-        if (legthInvalid) {
+        if (lengthInvalid) {
             return;
         }
         const adjustedScrollOffset = recyclerViewManager.getLastScrollOffset();
@@ -53,7 +53,7 @@ export const StickyHeaders = ({ stickyHeaderIndices, stickyHeaderOffset, renderI
             onChangeStickyIndex === null || onChangeStickyIndex === void 0 ? void 0 : onChangeStickyIndex(newStickyIndex);
         }
     }, [
-        legthInvalid,
+        lengthInvalid,
         recyclerViewManager,
         sortedIndices,
         currentStickyIndex,
@@ -102,7 +102,7 @@ export const StickyHeaders = ({ stickyHeaderIndices, stickyHeaderOffset, renderI
                 top: stickyHeaderOffset,
                 left: 0,
                 right: 0,
-                zIndex: 2,
+                zIndex: stickyHeaderZIndex,
                 transform: [{ translateY }],
                 opacity,
             } }, currentStickyIndex !== -1 && currentStickyIndex < data.length ? (React.createElement(ViewHolder, { index: currentStickyIndex, item: data[currentStickyIndex], renderItem: renderItem, layout: { x: 0, y: 0, width: 0, height: 0 }, refHolder: refHolder, extraData: extraData, trailingItem: null, target: "StickyHeader", hidden: false, inverted: inverted })) : null));
@@ -115,6 +115,7 @@ export const StickyHeaders = ({ stickyHeaderIndices, stickyHeaderOffset, renderI
         refHolder,
         extraData,
         stickyHeaderOffset,
+        stickyHeaderZIndex,
         inverted,
     ]);
     if (PlatformConfig.isRN083OrAbove && currentStickyIndex === -1) {

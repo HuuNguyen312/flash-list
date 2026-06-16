@@ -26,7 +26,7 @@ import { RenderTimeTracker } from "./helpers/RenderTimeTracker";
  * @template T - The type of items in the list
  */
 const RecyclerViewComponent = (props, ref) => {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
     // Destructure props and initialize refs
     const { horizontal, renderItem, data, extraData, onLoad, CellRendererComponent, overrideProps, refreshing, onRefresh, progressViewOffset, ListEmptyComponent, ListHeaderComponent, ListHeaderComponentStyle, ListFooterComponent, ListFooterComponentStyle, ItemSeparatorComponent, renderScrollComponent, style, stickyHeaderIndices, maintainVisibleContentPosition, onCommitLayoutEffect, onChangeStickyIndex, stickyHeaderConfig, inverted, ...rest } = props;
     const [renderTimeTracker] = useState(() => new RenderTimeTracker());
@@ -35,6 +35,7 @@ const RecyclerViewComponent = (props, ref) => {
     const stickyHeaderOffset = (_a = stickyHeaderConfig === null || stickyHeaderConfig === void 0 ? void 0 : stickyHeaderConfig.offset) !== null && _a !== void 0 ? _a : 0;
     const stickyHeaderUseNativeDriver = (_b = stickyHeaderConfig === null || stickyHeaderConfig === void 0 ? void 0 : stickyHeaderConfig.useNativeDriver) !== null && _b !== void 0 ? _b : true;
     const stickyHeaderHideRelatedCell = (_c = stickyHeaderConfig === null || stickyHeaderConfig === void 0 ? void 0 : stickyHeaderConfig.hideRelatedCell) !== null && _c !== void 0 ? _c : false;
+    const stickyHeaderZIndex = (_d = stickyHeaderConfig === null || stickyHeaderConfig === void 0 ? void 0 : stickyHeaderConfig.zIndex) !== null && _d !== void 0 ? _d : 2;
     // Compute the inverted transform style based on platform and orientation
     const invertedTransformStyle = inverted
         ? getInvertedTransformStyle(horizontal)
@@ -272,7 +273,7 @@ const RecyclerViewComponent = (props, ref) => {
             if (horizontal) {
                 throw new Error(ErrorMessages.stickyHeadersNotSupportedForHorizontal);
             }
-            return (React.createElement(StickyHeaders, { stickyHeaderIndices: stickyHeaderIndices, stickyHeaderOffset: stickyHeaderOffset, data: data, renderItem: renderItem, scrollY: scrollY, stickyHeaderRef: stickyHeaderRef, recyclerViewManager: recyclerViewManager, extraData: extraData, inverted: inverted, onChangeStickyIndex: (newStickyHeaderIndex) => {
+            return (React.createElement(StickyHeaders, { stickyHeaderIndices: stickyHeaderIndices, stickyHeaderOffset: stickyHeaderOffset, data: data, renderItem: renderItem, scrollY: scrollY, stickyHeaderRef: stickyHeaderRef, stickyHeaderZIndex: stickyHeaderZIndex, recyclerViewManager: recyclerViewManager, extraData: extraData, inverted: inverted, onChangeStickyIndex: (newStickyHeaderIndex) => {
                     if (stickyHeaderHideRelatedCell) {
                         setCurrentStickyIndex(newStickyHeaderIndex);
                     }
@@ -292,6 +293,7 @@ const RecyclerViewComponent = (props, ref) => {
         currentStickyIndex,
         onChangeStickyIndex,
         stickyHeaderHideRelatedCell,
+        stickyHeaderZIndex,
         inverted,
     ]);
     // Set up scroll event handling with animation support for sticky headers
@@ -315,7 +317,7 @@ const RecyclerViewComponent = (props, ref) => {
         return undefined;
     }, [maintainVisibleContentPosition, shouldMaintainVisibleContentPosition]);
     const shouldRenderFromBottom = recyclerViewManager.getDataLength() > 0 &&
-        ((_d = maintainVisibleContentPosition === null || maintainVisibleContentPosition === void 0 ? void 0 : maintainVisibleContentPosition.startRenderingFromBottom) !== null && _d !== void 0 ? _d : false);
+        ((_e = maintainVisibleContentPosition === null || maintainVisibleContentPosition === void 0 ? void 0 : maintainVisibleContentPosition.startRenderingFromBottom) !== null && _e !== void 0 ? _e : false);
     // Create view for measuring bounded size
     const viewToMeasureBoundedSize = useMemo(() => {
         return (React.createElement(CompatView, { style: {

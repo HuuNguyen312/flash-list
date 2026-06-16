@@ -26,6 +26,8 @@ export interface StickyHeaderProps<TItem> {
     renderItem: FlashListProps<TItem>["renderItem"];
     /** Ref to access sticky header methods */
     stickyHeaderRef: React.RefObject<StickyHeaderRef>;
+    /** zIndex applied to the sticky header container */
+    stickyHeaderZIndex?: number;
     /** Manager for recycler view operations */
     recyclerViewManager: RecyclerViewManager<TItem>;
     /** Additional data to trigger re-renders */
@@ -40,5 +42,5 @@ export interface StickyHeaderRef {
     /** Reports scroll events to update sticky header positions */
     reportScrollEvent: (event: NativeScrollEvent) => void;
 }
-export declare const StickyHeaders: <TItem>({ stickyHeaderIndices, stickyHeaderOffset, renderItem, stickyHeaderRef, recyclerViewManager, scrollY, data, extraData, onChangeStickyIndex, inverted, }: StickyHeaderProps<TItem>) => React.JSX.Element | null;
+export declare const StickyHeaders: <TItem>({ stickyHeaderIndices, stickyHeaderOffset, renderItem, stickyHeaderRef, recyclerViewManager, scrollY, data, extraData, onChangeStickyIndex, inverted, stickyHeaderZIndex, }: StickyHeaderProps<TItem>) => React.JSX.Element | null;
 //# sourceMappingURL=StickyHeaders.d.ts.map
