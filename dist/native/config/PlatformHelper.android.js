@@ -4,13 +4,15 @@ const PlatformConfig = {
     supportsOffsetCorrection: true,
     trackAverageRenderTimeForOffsetProjection: true,
     isRN083OrAbove: isRN083OrAbove(),
-    // Using rotate instead of scaleY on Android to avoid performance issues.
-    // Caveat: this causes the scrollbar to appear on the left side.
-    // Issue: https://github.com/Shopify/flash-list/issues/751
-    invertedTransformStyle: { transform: [{ rotate: "180deg" }] },
-    invertedTransformStyleHorizontal: {
-        transform: [{ rotate: "180deg" }],
-    },
+    // Use scaleY/scaleX to invert (matching iOS and web) so the native scrollbar
+    // stays on the correct edge. The previous `rotate("180deg")` workaround also
+    // mirrored the horizontal axis, which pushed the scrollbar to the wrong side
+    // (https://github.com/Shopify/flash-list/issues/751). `rotate` was originally
+    // chosen for v1 scroll performance, but that jank came from native subview
+    // clipping; v2 disables it (`removeClippedSubviews={false}`), so scaleY no
+    // longer regresses scrolling.
+    invertedTransformStyle: { transform: [{ scaleY: -1 }] },
+    invertedTransformStyleHorizontal: { transform: [{ scaleX: -1 }] },
 };
 export { PlatformConfig };
 //# sourceMappingURL=PlatformHelper.android.js.map

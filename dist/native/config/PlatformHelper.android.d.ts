@@ -5,12 +5,12 @@ declare const PlatformConfig: {
     isRN083OrAbove: boolean;
     invertedTransformStyle: {
         readonly transform: readonly [{
-            readonly rotate: "180deg";
+            readonly scaleY: -1;
         }];
     };
     invertedTransformStyleHorizontal: {
         readonly transform: readonly [{
-            readonly rotate: "180deg";
+            readonly scaleX: -1;
         }];
     };
 };
