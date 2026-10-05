@@ -22,6 +22,12 @@ export declare function roundOffPixel(value: number): number;
  */
 export declare function measureParentSize(view: Element): Size;
 /**
+ * Checks whether the container is hidden (display: none / detached).
+ * Every size reads as 0 then; measuring would overwrite real item layouts
+ * with 0 and make the list engage every item.
+ */
+export declare function isViewHidden(view: Element | null): boolean;
+/**
  * Measures the layout of child container of RecyclerView
  */
 export declare function measureFirstChildLayout(childContainerView: Element, parentView: Element): Layout;

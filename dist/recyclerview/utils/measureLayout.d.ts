@@ -37,6 +37,11 @@ export declare function roundOffPixel(value: number): number;
  */
 export declare function measureParentSize(view: View): Size;
 /**
+ * Web-only guard (see measureLayout.web.ts). Native views can't be hidden
+ * in a way that reports zero size while still mounted.
+ */
+export declare function isViewHidden(_view: View | null): boolean;
+/**
  * Specific method for easier mocking
  * Measures the layout of child container of RecyclerView
  * @param childContainerView

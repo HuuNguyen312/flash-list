@@ -78,6 +78,13 @@ export function measureParentSize(view) {
     return { width: layout.width, height: layout.height };
 }
 /**
+ * Web-only guard (see measureLayout.web.ts). Native views can't be hidden
+ * in a way that reports zero size while still mounted.
+ */
+export function isViewHidden(_view) {
+    return false;
+}
+/**
  * Specific method for easier mocking
  * Measures the layout of child container of RecyclerView
  * @param childContainerView
