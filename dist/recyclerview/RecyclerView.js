@@ -6,7 +6,7 @@ import React, { useCallback, useLayoutEffect, useMemo, useRef, forwardRef, useSt
 import { Animated, I18nManager, } from "react-native";
 import { ErrorMessages } from "../errors/ErrorMessages";
 import { WarningMessages } from "../errors/WarningMessages";
-import { areDimensionsNotEqual, measureFirstChildLayout, measureItemLayout, measureParentSize, } from "./utils/measureLayout";
+import { areDimensionsNotEqual, isViewHidden, measureFirstChildLayout, measureItemLayout, measureParentSize, } from "./utils/measureLayout";
 import { RecyclerViewContextProvider, useRecyclerViewContext, } from "./RecyclerViewContextProvider";
 import { useLayoutState } from "./hooks/useLayoutState";
 import { useRecyclerViewManager } from "./hooks/useRecyclerViewManager";
@@ -73,6 +73,12 @@ const RecyclerViewComponent = (props, ref) => {
      * This effect runs when the component mounts or when layout changes
      */
     useLayoutEffect(() => {
+        if (isViewHidden(internalViewRef.current)) {
+            // Record a zero size so onLayout sees a change when the container
+            // becomes visible again and triggers a fresh measurement.
+            containerViewSizeRef.current = { width: 0, height: 0 };
+            return;
+        }
         if (internalViewRef.current && firstChildViewRef.current) {
             // Measure the outer container size and inner container layout
             const outerViewSize = measureParentSize(internalViewRef.current);
@@ -102,7 +108,8 @@ const RecyclerViewComponent = (props, ref) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useLayoutEffect(() => {
         var _a, _b;
-        if (pendingChildIds.size > 0) {
+        // Hidden container reports 0 for every item; skip and keep last layouts.
+        if (pendingChildIds.size > 0 || isViewHidden(internalViewRef.current)) {
             return;
         }
         const layoutInfo = Array.from(refHolder, ([index, viewHolderRef]) => {

@@ -73,6 +73,15 @@ function isVerticallyFlipped(element: Element): boolean {
 }
 
 /**
+ * Checks whether the container is hidden (display: none / detached).
+ * Every size reads as 0 then; measuring would overwrite real item layouts
+ * with 0 and make the list engage every item.
+ */
+export function isViewHidden(view: Element | null): boolean {
+  return !view || (view.clientWidth === 0 && view.clientHeight === 0);
+}
+
+/**
  * Measures the layout of child container of RecyclerView
  */
 export function measureFirstChildLayout(
